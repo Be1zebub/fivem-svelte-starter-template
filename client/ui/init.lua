@@ -39,8 +39,8 @@ do
 		self:SetVisible(not self:IsVisible())
 	end
 
-	RegisterNUICallback("visibility", function(visible)
-		UI.visibility = visible
+	RegisterNUICallback("visibility", function(data)
+		UI.visibility = data.visibility
 	end)
 end
 
@@ -94,9 +94,10 @@ do
 		})
 	end
 
-	RegisterNUICallback("focus", function(focus)
-		UI.focus.mouse = focus.mouse
-		UI.focus.keyboard = focus.keyboard
+	RegisterNUICallback("focus", function(data)
+		UI.focus.mouse = data.mouse
+		UI.focus.keyboard = data.keyboard
+		SetNuiFocus(UI.focus.keyboard, UI.focus.mouse)
 	end)
 end
 
