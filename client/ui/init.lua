@@ -30,6 +30,10 @@ do
 	function UI:IsKeyboardFocused()
 		return self.focus.keyboard
 	end
+
+	function UI:GetPage()
+		return self.page
+	end
 end
 
 -- visibility
@@ -110,10 +114,6 @@ end
 
 -- pages
 do
-	function UI:GetPage()
-		return self.page
-	end
-
 	function UI:SetPage(page)
 		self.page = page
 		SendNUIMessage({
