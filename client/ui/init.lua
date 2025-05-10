@@ -3,8 +3,15 @@ UI = {
 	focus = {
 		keyboard = false,
 		mouse = false
-	}
+	},
+	page = "none"
 }
+
+function UI:Open(page)
+	self:SetPage(page)
+	self:SetVisible(true)
+	self:SetFocus(true, true)
+end
 
 -- getters
 do
@@ -101,8 +108,34 @@ do
 	end)
 end
 
+-- pages
+do
+	function UI:GetPage()
+		return self.page
+	end
+
+	function UI:SetPage(page)
+		self.page = page
+		SendNUIMessage({
+			action = "page",
+			data = page
+		})
+	end
+
+	RegisterNUICallback("page", function(data)
+		UI.page = data.page
+	end)
+end
+
 -- admin commands
 do
+	RegisterCommand(GetCurrentResourceName() .. ":open", function(_, args)
+		local page = table.concat(args, "")
+		UI:Open(page)
+	end, true)
+
+	-------------
+
 	RegisterCommand(GetCurrentResourceName() .. ":show", function()
 		UI:SetVisible(true)
 	end, true)
@@ -123,5 +156,12 @@ do
 
 	RegisterCommand(GetCurrentResourceName() .. ":mouse-focus", function()
 		UI:ToggleMouseFocus()
+	end, true)
+
+	-------------
+
+	RegisterCommand(GetCurrentResourceName() .. ":page", function(_, args)
+		local page = table.concat(args, "")
+		UI:SetPage(page)
 	end, true)
 end
